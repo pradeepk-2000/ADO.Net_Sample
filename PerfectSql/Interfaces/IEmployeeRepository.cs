@@ -4,9 +4,9 @@ namespace PerfectSql.Interfaces
 {
     public interface IEmployeeRepository
     {
-        EmployeeDetails? GetEmployeeDetails(EmployeeDetailsRequestModel model);
-        List<EmployeeDetails> GetAllEmployeeDetails();
-        bool UpdateDesignation(UpdateEmployeDesignationRequestModel model);
-        bool AddNewEmployee(NewEmployeeDetailsRequestModel model);
+        Task<EmployeeDetails?> GetEmployeeDetails(EmployeeDetailsRequestModel model);
+        Task<List<EmployeeDetails>> GetAllEmployeeDetails();
+        Task<bool> UpdateDesignation(UpdateEmployeDesignationRequestModel model);
+        Task<bool> AddNewEmployee(NewEmployeeDetailsRequestModel model);
     }
 }

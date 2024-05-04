@@ -2,6 +2,7 @@
 using PerfectSql.SqlDbFactory.Interfaces;
 using System.Data;
 using System.Data.SqlClient;
+using Dapper;
 
 namespace PerfectSql.SqlDbFactory.SqlRepository
 {
@@ -35,7 +36,7 @@ namespace PerfectSql.SqlDbFactory.SqlRepository
         }
 
 
-        public List<T> ExecuteReader<T>(string spName,List<SqlParameter> parms)
+         public  List<T> ExecuteReader<T>(string spName,List<SqlParameter> parms)
         {
             List<T> results = new List<T>();
              using (var conn = _connectionFactory.GetConnectionString())
@@ -51,24 +52,11 @@ namespace PerfectSql.SqlDbFactory.SqlRepository
                     conn.Open();
                     using (IDataReader reader = cmd.ExecuteReader())
                     {
-                        
+                        var parser = reader.GetRowParser<T>(); //install Dapper package
                         while (reader.Read())
                         {
-                            // Creating an instance of type T by using reflection
-                            T obj = Activator.CreateInstance<T>();
+                            results.Add(parser(reader));
 
-                            // T should have public properties 
-                            foreach (var property in typeof(T).GetProperties())
-                            {
-                                // we will Check if the reader contains a column with the same name as the property
-                                if (reader[property.Name] != DBNull.Value)
-                                {
-                                    // Set the property value using the corresponding column value from the reader
-                                    property.SetValue(obj, reader[property.Name]);
-                                }
-                            }
-
-                            results.Add(obj);
                         }
                     }
                 }
@@ -95,6 +83,7 @@ namespace PerfectSql.SqlDbFactory.SqlRepository
             }
         }
 
+        #region Not for use, Just for reference
         //to get single record
         //public T ExecuteReader<T>(string spName, List<SqlParameter> parms)
         //{
@@ -146,6 +135,6 @@ namespace PerfectSql.SqlDbFactory.SqlRepository
         //    }
         //    return results;
         //}
-
+        #endregion
     }
 }

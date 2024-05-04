@@ -14,13 +14,13 @@ namespace PerfectSql
             var connectionString = builder.Configuration.GetConnectionString("EmployeeManagementConnection");
 
             // Add services to the container.
-            builder.Services.AddTransient<IconnectionFactory>(provider =>
+            builder.Services.AddSingleton<IconnectionFactory>(provider =>
                 new ConnectionFactory(connectionString));
             builder.Services.AddTransient<IEmployeeRepository,EmployeeRepository>();
             builder.Services.AddTransient<ISqlReaderMapper, SqlReaderMapper>();
 
             builder.Services.AddControllers();
-
+            builder.Services.AddCors();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
@@ -32,6 +32,10 @@ namespace PerfectSql
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+            app.UseCors(x => x
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .SetIsOriginAllowed(origin => true));
 
             app.UseHttpsRedirection();
 

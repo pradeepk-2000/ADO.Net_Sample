@@ -26,14 +26,14 @@ namespace PerfectSql.Controllers
             return new JsonResult(true);
         }
         [HttpGet("GetEmployeeDetails")]
-        public IActionResult GetEmployeeDetails([FromQuery] EmployeeDetailsRequestModel model)
+        public async Task<IActionResult> GetEmployeeDetails([FromQuery] EmployeeDetailsRequestModel model)
         {
             ServiceResponse<EmployeeDetails> serviceResponse;
             try
             {
                 if (ModelState.IsValid)
                 {
-                    var response =  _employeeRepository.GetEmployeeDetails(model);
+                    var response = await _employeeRepository.GetEmployeeDetails(model);
                     if (response != null && !string.IsNullOrEmpty(response.EmpName))
                     {
                         serviceResponse = new ServiceResponse<EmployeeDetails>
@@ -71,21 +71,21 @@ namespace PerfectSql.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Internal Server error" + ex.StackTrace);
-                return StatusCode(StatusCodes.Status500InternalServerError, model);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         
     }
 
 
         [HttpPost("UpdateEmployeeDesignation")]
-        public IActionResult UpdateEmployeeDesignation([FromBody] UpdateEmployeDesignationRequestModel model)
+        public async Task<IActionResult> UpdateEmployeeDesignation([FromBody] UpdateEmployeDesignationRequestModel model)
         {
             ServiceResponse<object> serviceResponse;
             try
             {
                 if (ModelState.IsValid)
                 {
-                    var response = _employeeRepository.UpdateDesignation(model);
+                    var response = await _employeeRepository.UpdateDesignation(model);
                     if (response)
                     {
                         serviceResponse = new ServiceResponse<object>
@@ -123,21 +123,21 @@ namespace PerfectSql.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Internal Server error" + ex.StackTrace);
-                return StatusCode(StatusCodes.Status500InternalServerError, model);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
 
         }
 
 
         [HttpGet("GetAllEmployeeDetails")]
-        public IActionResult GetAllEmployeeDetails()
+        public async Task<IActionResult> GetAllEmployeeDetails()
         {
             ServiceResponse<List<EmployeeDetails>> serviceResponse;
             try
             {
                 if (ModelState.IsValid)
                 {
-                    var response = _employeeRepository.GetAllEmployeeDetails();
+                    var response = await _employeeRepository.GetAllEmployeeDetails();
                     if (response != null)
                     {
                         serviceResponse = new ServiceResponse<List<EmployeeDetails>>
@@ -175,20 +175,20 @@ namespace PerfectSql.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Internal Server error" + ex.StackTrace);
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return StatusCode(StatusCodes.Status500InternalServerError,ex.Message);
             }
 
         }
 
         [HttpPost("AddNewEmployee")]
-        public IActionResult AddNewEmployee([FromBody] NewEmployeeDetailsRequestModel model)
+        public async Task<IActionResult> AddNewEmployee([FromBody] NewEmployeeDetailsRequestModel model)
         {
             ServiceResponse<object> serviceResponse;
             try
             {
                 if(ModelState.IsValid)
                 {
-                    var response = _employeeRepository.AddNewEmployee(model);
+                    var response = await _employeeRepository.AddNewEmployee(model);
                     if (response)
                     {
                         serviceResponse = new ServiceResponse<object>
@@ -221,7 +221,7 @@ namespace PerfectSql.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Internal Server error" + ex.StackTrace);
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
     }

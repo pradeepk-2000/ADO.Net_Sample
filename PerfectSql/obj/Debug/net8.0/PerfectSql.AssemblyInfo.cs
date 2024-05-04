@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PerfectSql")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+02d0800f212c08d6ea8165db87c5d88c3179f12c")]
 [assembly: System.Reflection.AssemblyProductAttribute("PerfectSql")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PerfectSql")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
