@@ -14,7 +14,7 @@ namespace PerfectSql
             var connectionString = builder.Configuration.GetConnectionString("EmployeeManagementConnection");
 
             // Add services to the container.
-            builder.Services.AddSingleton<IconnectionFactory>(provider =>
+            builder.Services.AddTransient<IconnectionFactory>(provider =>
                 new ConnectionFactory(connectionString));
             builder.Services.AddTransient<IEmployeeRepository,EmployeeRepository>();
             builder.Services.AddTransient<ISqlReaderMapper, SqlReaderMapper>();
