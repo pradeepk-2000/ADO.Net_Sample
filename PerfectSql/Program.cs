@@ -1,4 +1,6 @@
 
+using PerfectSql.AnotherSqlDbFactory.Interfaces;
+using PerfectSql.AnotherSqlDbFactory.SqlRepository;
 using PerfectSql.Interfaces;
 using PerfectSql.Repository;
 using PerfectSql.SqlDbFactory.Interfaces;
@@ -14,10 +16,19 @@ namespace PerfectSql
             var connectionString = builder.Configuration.GetConnectionString("EmployeeManagementConnection");
 
             // Add services to the container.
-            builder.Services.AddSingleton<IconnectionFactory>(provider =>
+            builder.Services.AddTransient<IconnectionFactory>(provider =>
                 new ConnectionFactory(connectionString));
             builder.Services.AddTransient<IEmployeeRepository,EmployeeRepository>();
             builder.Services.AddTransient<ISqlReaderMapper, SqlReaderMapper>();
+
+            //Another....
+            builder.Services.AddSingleton<IResultReaderMapperFactory, ResultReaderMapperFactory>();
+            builder.Services.AddSingleton<IConnectionString, ConnectionString>();
+            builder.Services.AddTransient<SqlIconnectionFactory, SqlConnectionFactory>();
+
+            builder.Services.AddTransient<AnotherIEmployeeRepository, AnotherRepository>();
+            //builder.Services.AddTransient<AnotherISqlReaderMapper, AnotherSqlReaderMapper>(); //dont need
+
 
             builder.Services.AddControllers();
             builder.Services.AddCors();
